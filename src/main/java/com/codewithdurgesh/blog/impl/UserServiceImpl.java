@@ -1,6 +1,7 @@
 package com.codewithdurgesh.blog.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -8,6 +9,10 @@ import com.codewithdurgesh.blog.entities.User;
 import com.codewithdurgesh.blog.payloads.UserDto;
 import com.codewithdurgesh.blog.respositories.UserRepo;
 import com.codewithdurgesh.blog.services.UserService;
+
+import net.bytebuddy.asm.Advice.This;
+
+import com.codewithdurgesh.blog.exceptions.*;
 
 public class UserServiceImpl implements UserService {
 
@@ -22,27 +27,43 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDto updateUser(UserDto user, Integer userId) {
-		// TODO Auto-generated method stub
-		return null;
+	public UserDto updateUser(UserDto userDto, Integer userId) {
+		User user = this.userRepo.findById(userId)
+				.orElseThrow(()-> new ResouceNotFoundException("User","Id",userId));
+		
+		user.setName(userDto.getName());
+		user.setEmail(userDto.getEmail());
+		user.setPassword(userDto.getPassword());
+		user.setAbout(userDto.getAbout());
+		
+		User updateUser = this.userRepo.save(user);
+		UserDto userToDto1 = this.userToDto(updateUser);
+		return userToDto1
+				;
 	}
 
 	@Override
 	public UserDto getUserById(Integer userId) {
-		// TODO Auto-generated method stub
-		return null;
+		User user = this.userRepo.findById(userId)
+				.orElseThrow(()-> new ResouceNotFoundException("User","Id",userId));
+		
+		return this.userToDto(user);
 	}
 
 	@Override
 	public List<UserDto> getAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<User> users = this.userRepo.findAll();
+		
+		List<UserDto> userDtos = users.stream().map(user->this.userToDto(user)).collect(Collectors.toList());
+		
+		return userDtos;
 	}
 
 	@Override
 	public void deleteUser(Integer userId) {
-		// TODO Auto-generated method stub
-		
+		User user = this.userRepo.findById(userId).orElseThrow(()-> new ResouceNotFoundException("User", "Id", userId));
+		this.userRepo.delete(user);
 	}
 	
 	public User dtoToUser (UserDto userDto) {
