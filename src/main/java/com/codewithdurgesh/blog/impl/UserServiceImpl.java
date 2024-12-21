@@ -2,18 +2,16 @@ package com.codewithdurgesh.blog.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.codewithdurgesh.blog.entities.User;
 import com.codewithdurgesh.blog.payloads.UserDto;
 import com.codewithdurgesh.blog.respositories.UserRepo;
 import com.codewithdurgesh.blog.services.UserService;
-
-import net.bytebuddy.asm.Advice.This;
-
 import com.codewithdurgesh.blog.exceptions.*;
 
+@Service
 public class UserServiceImpl implements UserService {
 
 	@Autowired
