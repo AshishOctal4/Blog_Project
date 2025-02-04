@@ -1,0 +1,19 @@
+01.20. 13.22.51.075 [restartedMain] [ERROR] [logger{36}]-
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field categoryService in com.codewithdurgesh.blog.controllers.CategoryController required a bean of type 'com.codewithdurgesh.blog.services.CategoryService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.codewithdurgesh.blog.services.CategoryService' in your configuration.
+
+]
